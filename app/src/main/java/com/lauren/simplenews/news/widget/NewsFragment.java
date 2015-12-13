@@ -46,10 +46,10 @@ public class NewsFragment extends Fragment {
     private void setupViewPager(ViewPager mViewPager) {
         //Fragment中嵌套使用Fragment一定要使用getChildFragmentManager(),否则会有问题
         MyPagerAdapter adapter = new MyPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new AboutFragment(), "内容简介");
-        adapter.addFragment(new AboutFragment(), "作者简介");
-        adapter.addFragment(new AboutFragment(), "目录");
-        adapter.addFragment(new AboutFragment(), "目录");
+        adapter.addFragment(new NewsListFragment(), getString(R.string.top));
+        adapter.addFragment(new AboutFragment(), getString(R.string.nba));
+        adapter.addFragment(new AboutFragment(), getString(R.string.cars));
+        adapter.addFragment(new AboutFragment(), getString(R.string.jokes));
         mViewPager.setAdapter(adapter);
     }
 
