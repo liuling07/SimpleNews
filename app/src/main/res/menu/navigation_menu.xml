@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".main.widget.MainActivity">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navigation_item_news"
+            android:icon="@drawable/ic_assessment_white_24dp"
+            android:checked="true"
+            android:title="@string/navigation_news" />
+        <item
+            android:id="@+id/navigation_item_images"
+            android:icon="@drawable/ic_image_white_24dp"
+            android:title="@string/navigation_images" />
+        <item
+            android:id="@+id/navigation_item_weather"
+            android:icon="@drawable/ic_date_range_white_24dp"
+            android:title="@string/navigation_weather" />
+
+        <item
+            android:id="@+id/navigation_item_about"
+            android:icon="@drawable/ic_portrait_white_24dp"
+            android:title="@string/navigation_about" />
+    </group>
+</menu>
