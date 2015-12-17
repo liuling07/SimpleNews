@@ -3,9 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/card_margin"
+    android:layout_marginLeft="@dimen/card_margin"
+    android:layout_marginRight="@dimen/card_margin"
     android:clickable="true"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="10dp">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,9 +18,10 @@
         android:padding="12dp">
 
         <ImageView
-            android:id="@+id/ivBook"
+            android:id="@+id/ivNews"
             android:layout_width="109dp"
-            android:layout_height="75dp" />
+            android:layout_height="75dp"
+            android:src="@mipmap/ic_launcher"/>
 
         <LinearLayout
             android:layout_width="match_parent"

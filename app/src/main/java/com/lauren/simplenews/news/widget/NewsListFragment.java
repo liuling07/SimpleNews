@@ -46,7 +46,7 @@ public class NewsListFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+//        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         // specify an adapter (see also next example)
@@ -73,7 +73,7 @@ public class NewsListFragment extends Fragment {
 
             public ViewHolder(View v) {
                 super(v);
-                mTextView = (TextView) v.findViewById(R.id.textView);
+                mTextView = (TextView) v.findViewById(R.id.tvTitle);
                 v.setOnClickListener(this);
             }
 
@@ -94,7 +94,6 @@ public class NewsListFragment extends Fragment {
         @Override
         public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                        int viewType) {
-            Log.e("TAG", "onCreateViewHolder");
             // create a new view
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_news, parent, false);
@@ -110,7 +109,6 @@ public class NewsListFragment extends Fragment {
             // - get element from your dataset at this position
             // - replace the contents of the view with that element
             holder.mTextView.setText(mDataset[position]);
-            Log.e("TAG", "onBindViewHolder");
         }
 
         // Return the size of your dataset (invoked by the layout manager)
