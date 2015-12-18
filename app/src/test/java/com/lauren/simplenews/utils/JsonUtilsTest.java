@@ -33,4 +33,9 @@ public class JsonUtilsTest {
     public void testDeserialize() throws Exception {
         assertNotNull(JsonUtils.deserialize("{\"name\":\"Lauren\",\"sex\":\"男\"}", User.class));
     }
+
+    @Test
+    public void testDeserialize1() throws Exception {
+        assertNotNull(JsonUtils.deserialize1("{\"name\":\"Lauren\",\"sex\":\"男\"}", User.class));
+    }
 }

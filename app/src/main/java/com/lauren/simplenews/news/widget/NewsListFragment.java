@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.lauren.simplenews.R;
+import com.lauren.simplenews.news.view.NewsView;
 
 /**
  * Description :
@@ -24,7 +24,7 @@ import com.lauren.simplenews.R;
  * Blog   : http://www.liuling123.com
  * Date   : 15/12/13
  */
-public class NewsListFragment extends Fragment {
+public class NewsListFragment extends Fragment implements NewsView {
 
     public static final int NEWS_TYPE_TOP = 0;
     public static final int NEWS_TYPE_NBA = 1;
@@ -35,6 +35,13 @@ public class NewsListFragment extends Fragment {
     private LinearLayoutManager mLayoutManager;
     private MyAdapter mAdapter;
     String[] myDataset;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
