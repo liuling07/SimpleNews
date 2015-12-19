@@ -6,9 +6,7 @@
     android:layout_marginBottom="@dimen/card_margin"
     android:layout_marginLeft="@dimen/card_margin"
     android:layout_marginRight="@dimen/card_margin"
-    android:clickable="true"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="8dp">
+    android:clickable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,17 +15,18 @@
         android:orientation="horizontal"
         android:padding="12dp">
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/ivNews"
-            android:layout_width="109dp"
-            android:layout_height="75dp"
-            android:src="@mipmap/ic_launcher"/>
+            android:layout_width="@dimen/news_image_width"
+            android:layout_height="@dimen/news_image_height"
+            app:placeholderImage="@drawable/ic_image_loading"
+            app:failureImage="@drawable/ic_image_loadfail"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:paddingTop="4dp"
+            android:layout_marginLeft="8dp"
             android:orientation="vertical">
 
             <TextView
@@ -36,15 +35,19 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textColor="@color/primary_text"
+                android:textSize="@dimen/sn_16sp"
+                android:singleLine="true"
                 android:text="湖人大战勇士"/>
 
             <TextView
                 android:id="@+id/tvDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 android:text="湖人大战勇士"
-                android:textColor="@color/secondary_text" />
+                android:textColor="@color/secondary_text"
+                android:maxLines="2"
+                android:textSize="@dimen/sn_12sp"/>
         </LinearLayout>
 
     </LinearLayout>

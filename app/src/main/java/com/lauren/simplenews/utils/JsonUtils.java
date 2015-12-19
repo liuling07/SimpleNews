@@ -1,6 +1,7 @@
 package com.lauren.simplenews.utils;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
 import java.lang.reflect.Type;
@@ -33,12 +34,20 @@ public class JsonUtils {
      * @param <T>
      * @return
      */
-    public static <T> T deserialize(String json, Class<T> clz) {
-        try {
-            return mGson.fromJson(json, clz);
-        } catch (JsonSyntaxException e) {
-            return null;
-        }
+    public static <T> T deserialize(String json, Class<T> clz) throws JsonSyntaxException {
+        return mGson.fromJson(json, clz);
+    }
+
+    /**
+     * 将json对象转换为实体对象
+     * @param json
+     * @param clz
+     * @param <T>
+     * @return
+     * @throws JsonSyntaxException
+     */
+    public static <T> T deserialize(JsonObject json, Class<T> clz) throws JsonSyntaxException {
+        return mGson.fromJson(json, clz);
     }
 
     /**
@@ -48,9 +57,12 @@ public class JsonUtils {
      * @param <T>
      * @return
      */
-    public static <T> T deserialize1(String json, Type type) throws JsonSyntaxException {
+    public static <T> T deserialize(String json, Type type) throws JsonSyntaxException {
         return mGson.fromJson(json, type);
     }
+
+
+
 
 
 

@@ -1,5 +1,7 @@
 package com.lauren.simplenews.news.view;
 
+import com.lauren.simplenews.beans.NewsBean;
+
 import java.util.List;
 
 /**
@@ -12,7 +14,9 @@ public interface NewsView {
 
     void showProgress();
 
-    void showNews(List newsList);
+    void showNews(List<NewsBean> newsList);
+
+    void addNews(List<NewsBean> newsList);
 
     void hideProgress();
 }

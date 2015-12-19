@@ -9,25 +9,27 @@ package com.lauren.simplenews.commons;
  */
 public class Urls {
 
-    public static final String host = "http://c.m.163.com/";
-    public static final String endUrl = "-20.html";
-    public static final String endDetailUrl = "/full.html";
-    // 头条
-    public static final String TopUrl = host + "nc/article/headline/";
-    public static final String TopId = "T1348647909107";
-    // 新闻详情
-    public static final String NewDetail = host + "nc/article/";
+    //http://c.m.163.com/nc/article/headline/T1348647909107/0-5.html  头条
 
-    public static final String CommonUrl = host + "nc/article/list/";
+    public static final int PAZE_SIZE = 20;
+
+    public static final String HOST = "http://c.m.163.com/";
+    public static final String END_URL = "-" + PAZE_SIZE + ".html";
+    public static final String END_DETAIL_URL = "/full.html";
+    // 头条
+    public static final String TOP_URL = HOST + "nc/article/headline/";
+    public static final String TOP_ID = "T1348647909107";
+    // 新闻详情
+    public static final String NEW_DETAIL = HOST + "nc/article/";
+
+    public static final String COMMON_URL = HOST + "nc/article/list/";
 
     // 汽车
-    public static final String QiChiId = "T1348654060988";
+    public static final String CAR_ID = "T1348654060988";
     // 笑话
-    public static final String XiaoHuaId = "T1350383429665";
+    public static final String JOKE_ID = "T1350383429665";
     // nba
-    public static final String NBAId = "T1348649145984";
-    // 财经
-    public static final String CaiJingId = "T1348648756099";
+    public static final String NBA_ID = "T1348649145984";
 
     /**
      * 新浪图片新闻

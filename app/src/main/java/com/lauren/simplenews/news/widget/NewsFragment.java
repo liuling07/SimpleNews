@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lauren.simplenews.R;
-import com.lauren.simplenews.about.widget.AboutFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +23,11 @@ import java.util.List;
  * Date   : 15/12/13
  */
 public class NewsFragment extends Fragment {
+
+    public static final int NEWS_TYPE_TOP = 0;
+    public static final int NEWS_TYPE_NBA = 1;
+    public static final int NEWS_TYPE_CARS = 2;
+    public static final int NEWS_TYPE_JOKES = 3;
 
     private TabLayout mTablayout;
     private ViewPager mViewPager;
@@ -46,10 +50,10 @@ public class NewsFragment extends Fragment {
     private void setupViewPager(ViewPager mViewPager) {
         //Fragment中嵌套使用Fragment一定要使用getChildFragmentManager(),否则会有问题
         MyPagerAdapter adapter = new MyPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new NewsListFragment(), getString(R.string.top));
-        adapter.addFragment(new AboutFragment(), getString(R.string.nba));
-        adapter.addFragment(new AboutFragment(), getString(R.string.cars));
-        adapter.addFragment(new AboutFragment(), getString(R.string.jokes));
+        adapter.addFragment(NewsListFragment.newInstance(NEWS_TYPE_TOP), getString(R.string.top));
+        adapter.addFragment(NewsListFragment.newInstance(NEWS_TYPE_NBA), getString(R.string.nba));
+        adapter.addFragment(NewsListFragment.newInstance(NEWS_TYPE_CARS), getString(R.string.cars));
+        adapter.addFragment(NewsListFragment.newInstance(NEWS_TYPE_JOKES), getString(R.string.jokes));
         mViewPager.setAdapter(adapter);
     }
 
