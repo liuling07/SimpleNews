@@ -28,4 +28,5 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.7.0'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.facebook.fresco:fresco:0.6.0+'
+    compile 'com.androidadvance:topsnackbar:0.0.9'
 }

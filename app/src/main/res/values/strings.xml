@@ -19,4 +19,7 @@
     <string name="nba">NBA</string>
     <string name="cars">汽车</string>
     <string name="jokes">笑话</string>
+
+    <string name="load_fail">加载数据失败!</string>
+    <string name="title_activity_news_detail">NewsDetailActivity</string>
 </resources>

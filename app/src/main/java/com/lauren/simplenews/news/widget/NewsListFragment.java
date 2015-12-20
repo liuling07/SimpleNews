@@ -1,9 +1,11 @@
 package com.lauren.simplenews.news.widget;
 
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,21 +14,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.lauren.simplenews.R;
 import com.lauren.simplenews.beans.NewsBean;
 import com.lauren.simplenews.commons.Urls;
+import com.lauren.simplenews.news.NewsAdapter;
 import com.lauren.simplenews.news.presenter.NewsPresenter;
 import com.lauren.simplenews.news.presenter.NewsPresenterImpl;
 import com.lauren.simplenews.news.view.NewsView;
+import com.lauren.simplenews.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Description : 头条新闻Fragment
+ * Description : 新闻Fragment
  * Author : lauren
  * Email  : lauren.liuling@gmail.com
  * Blog   : http://www.liuling123.com
@@ -34,10 +36,12 @@ import java.util.List;
  */
 public class NewsListFragment extends Fragment implements NewsView, SwipeRefreshLayout.OnRefreshListener {
 
+    private static final String TAG = "NewsListFragment";
+
     private SwipeRefreshLayout mSwipeRefreshWidget;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
-    private MyAdapter mAdapter;
+    private NewsAdapter mAdapter;
     private List<NewsBean> mData;
     private NewsPresenter mNewsPresenter;
 
@@ -77,7 +81,8 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new MyAdapter();
+        mAdapter = new NewsAdapter();
+        mAdapter.setOnItemClickListener(mOnItemClickListener);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setOnScrollListener(mOnScrollListener);
         onRefresh();
@@ -98,10 +103,28 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
             if (newState == RecyclerView.SCROLL_STATE_IDLE
-                    && lastVisibleItem + 1 == mAdapter.getItemCount()) {
+                    && lastVisibleItem + 1 == mAdapter.getItemCount()
+                    && mAdapter.isShowFooter()) {
                 //加载更多
+                LogUtils.d(TAG, "loading more data");
                 mNewsPresenter.loadNews(mType, pageIndex + Urls.PAZE_SIZE);
             }
+        }
+    };
+
+    private NewsAdapter.OnItemClickListener mOnItemClickListener = new NewsAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(View view, int position) {
+            NewsBean news = mAdapter.getItem(position);
+            Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+            intent.putExtra("news", news);
+
+            View transitionView = view.findViewById(R.id.ivNews);
+            ActivityOptionsCompat options =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
+                            transitionView, getString(R.string.transition_news_img));
+
+            ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
         }
     };
 
@@ -127,6 +150,10 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
         mData.addAll(newsList);
         mAdapter.notifyDataSetChanged();
         pageIndex += Urls.PAZE_SIZE;
+        //如果没有更多数据了,则隐藏footer布局
+        if(newsList == null || newsList.size() == 0) {
+            mAdapter.isShowFooter(false);
+        }
     }
 
 
@@ -136,105 +163,14 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
     }
 
     @Override
+    public void showLoadFailMsg() {
+        Snackbar.make(mRecyclerView.getRootView(), getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void onRefresh() {
         pageIndex = 0;
         mNewsPresenter.loadNews(mType, pageIndex);
     }
 
-    public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-        private static final int TYPE_ITEM = 0;
-        private static final int TYPE_FOOTER = 1;
-
-        private List<NewsBean> mDate;
-
-
-        public MyAdapter() {
-        }
-
-        public void setmDate(List<NewsBean> mDate) {
-            this.mDate = mDate;
-            this.notifyDataSetChanged();
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            // 最后一个item设置为footerView
-            if (position + 1 == getItemCount()) {
-                return TYPE_FOOTER;
-            } else {
-                return TYPE_ITEM;
-            }
-        }
-
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                       int viewType) {
-            if(viewType == TYPE_ITEM) {
-                View v = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_news, parent, false);
-                ItemViewHolder vh = new ItemViewHolder(v);
-                return vh;
-            } else {
-                View view = LayoutInflater.from(parent.getContext()).inflate(
-                        R.layout.footer, null);
-                view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT));
-                return new FooterViewHolder(view);
-            }
-        }
-
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if(holder instanceof ItemViewHolder) {
-
-                NewsBean news = mDate.get(position);
-                if(news == null) {
-                    return;
-                }
-                ((ItemViewHolder) holder).mTitle.setText(news.getTitle());
-                ((ItemViewHolder) holder).mDesc.setText(news.getDigest());
-                Uri uri = Uri.parse(news.getImgsrc());
-                ((ItemViewHolder) holder).mNewsImg.setImageURI(uri);
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            if(mDate == null) {
-                return 1;
-            }
-            return mDate.size() + 1;
-        }
-
-        public class FooterViewHolder extends RecyclerView.ViewHolder {
-
-            public FooterViewHolder(View view) {
-                super(view);
-            }
-
-        }
-
-        public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-            public TextView mTitle;
-            public TextView mDesc;
-            public SimpleDraweeView mNewsImg;
-
-            public ItemViewHolder(View v) {
-                super(v);
-                mTitle = (TextView) v.findViewById(R.id.tvTitle);
-                mDesc = (TextView) v.findViewById(R.id.tvDesc);
-                mNewsImg = (SimpleDraweeView) v.findViewById(R.id.ivNews);
-                v.setOnClickListener(this);
-            }
-
-            @Override
-            public void onClick(View view) {
-                String text = "I Love " + mTitle.getText() + ".";
-                Snackbar.make(view, text, Snackbar.LENGTH_SHORT).show();
-            }
-        }
-
-    }
 }

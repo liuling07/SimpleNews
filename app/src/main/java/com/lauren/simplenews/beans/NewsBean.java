@@ -3,7 +3,7 @@ package com.lauren.simplenews.beans;
 import java.io.Serializable;
 
 /**
- * Description :
+ * Description : 新闻实体类
  * Author : lauren
  * Email  : lauren.liuling@gmail.com
  * Blog   : http://www.liuling123.com
