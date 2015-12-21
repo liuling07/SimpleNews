@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<me.imid.swipebacklayout.lib.SwipeBackLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+    
+<!-- From: file:/F:/liuling/Repositories/SimpleNews/swipeback/src/main/res/layout/swipeback_layout.xml -->
