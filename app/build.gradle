@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "com.lauren.simplenews"
@@ -27,6 +27,7 @@ dependencies {
     compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.squareup.okhttp:okhttp:2.7.0'
     compile 'com.google.code.gson:gson:2.2.4'
-    compile 'com.facebook.fresco:fresco:0.6.0+'
-    compile 'com.androidadvance:topsnackbar:0.0.9'
+    compile 'de.hdodenhof:circleimageview:1.3.0'
+    compile 'com.github.bumptech.glide:glide:3.6.1'
+    compile 'org.sufficientlysecure:html-textview:1.3'
 }

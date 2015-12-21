@@ -20,4 +20,16 @@ public class NewsModelImpl implements NewsModel {
     public void loadNews(String url, OkHttpUtils.ResultCallback callback) {
         OkHttpUtils.get(url, callback);
     }
+
+    /**
+     * 加载新闻详情
+     * @param url
+     * @param callback
+     */
+    @Override
+    public void loadNewsDetail(String url, OkHttpUtils.ResultCallback callback) {
+        OkHttpUtils.get(url, callback);
+    }
+
+
 }

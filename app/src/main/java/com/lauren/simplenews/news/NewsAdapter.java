@@ -1,15 +1,16 @@
 package com.lauren.simplenews.news;
 
-import android.net.Uri;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.lauren.simplenews.R;
 import com.lauren.simplenews.beans.NewsBean;
+import com.lauren.simplenews.utils.ImageLoaderUtils;
 
 import java.util.List;
 
@@ -26,10 +27,12 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<NewsBean> mData;
     private boolean mShowFooter = true;
+    private Context mContext;
 
     private OnItemClickListener mOnItemClickListener;
 
-    public NewsAdapter() {
+    public NewsAdapter(Context context) {
+        this.mContext = context;
     }
 
     public void setmDate(List<NewsBean> data) {
@@ -77,8 +80,9 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
             ((ItemViewHolder) holder).mTitle.setText(news.getTitle());
             ((ItemViewHolder) holder).mDesc.setText(news.getDigest());
-            Uri uri = Uri.parse(news.getImgsrc());
-            ((ItemViewHolder) holder).mNewsImg.setImageURI(uri);
+//            Uri uri = Uri.parse(news.getImgsrc());
+//            ((ItemViewHolder) holder).mNewsImg.setImageURI(uri);
+            ImageLoaderUtils.display(mContext, ((ItemViewHolder) holder).mNewsImg, news.getImgsrc());
         }
     }
 
@@ -123,13 +127,13 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public TextView mTitle;
         public TextView mDesc;
-        public SimpleDraweeView mNewsImg;
+        public ImageView mNewsImg;
 
         public ItemViewHolder(View v) {
             super(v);
             mTitle = (TextView) v.findViewById(R.id.tvTitle);
             mDesc = (TextView) v.findViewById(R.id.tvDesc);
-            mNewsImg = (SimpleDraweeView) v.findViewById(R.id.ivNews);
+            mNewsImg = (ImageView) v.findViewById(R.id.ivNews);
             v.setOnClickListener(this);
         }
 

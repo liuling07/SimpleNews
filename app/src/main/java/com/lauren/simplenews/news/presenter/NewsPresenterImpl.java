@@ -58,6 +58,7 @@ public class NewsPresenterImpl implements NewsPresenter {
             @Override
             public void onFailure(Exception e) {
                 mNewsView.hideProgress();
+                mNewsView.showLoadFailMsg();
             }
         };
         mNewsModel.loadNews(url, loadNewsCallback);

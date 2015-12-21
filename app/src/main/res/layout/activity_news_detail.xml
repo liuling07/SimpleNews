@@ -21,18 +21,6 @@
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <!--<com.facebook.drawee.view.SimpleDraweeView-->
-                <!--android:id="@+id/ivNews"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:fitsSystemWindows="true"-->
-                <!--android:transitionName="@string/transition_news_img"-->
-                <!--android:scaleType="centerCrop"-->
-                <!--app:layout_collapseMode="parallax"-->
-                <!--app:layout_collapseParallaxMultiplier="0.7"-->
-                <!--android:elevation="20dp"-->
-                <!--app:placeholderImage="@drawable/ic_image_loading"-->
-                <!--/>-->
             <ImageView
                 android:id="@+id/ivImage"
                 android:layout_width="match_parent"
@@ -41,8 +29,7 @@
                 android:transitionName="@string/transition_news_img"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.7"
-                android:src="@drawable/ic_image_loading"/>
+                app:layout_collapseParallaxMultiplier="0.7" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -57,5 +44,32 @@
 
     </android.support.design.widget.AppBarLayout>
 
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ProgressBar
+                android:id="@+id/progress"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+
+            <org.sufficientlysecure.htmltextview.HtmlTextView
+                android:id="@+id/htNewsContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="12dp"
+                android:textAppearance="@android:style/TextAppearance.Medium" />
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -38,6 +38,7 @@ public class NewsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_news, null);
         mTablayout = (TabLayout) view.findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        mViewPager.setOffscreenPageLimit(3);
         setupViewPager(mViewPager);
         mTablayout.addTab(mTablayout.newTab().setText(R.string.top));
         mTablayout.addTab(mTablayout.newTab().setText(R.string.nba));

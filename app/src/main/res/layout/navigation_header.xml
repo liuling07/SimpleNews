@@ -9,7 +9,7 @@
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <!--<com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/ivNews"
         android:layout_width="72dp"
         android:layout_height="72dp"
@@ -17,7 +17,16 @@
         app:roundAsCircle="true"
         app:roundingBorderWidth="2dp"
         app:roundingBorderColor="@color/icons"
-        />
+        />-->
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/protrait"
+        app:border_color="@color/primary_light"
+        app:border_width="2dp" />
+
     <TextView
         android:layout_marginTop="10dp"
         android:textSize="18sp"

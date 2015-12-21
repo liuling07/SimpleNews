@@ -35,10 +35,6 @@ public class NewsDetailBean {
      */
     private String cover;
     /**
-     * url_mp4
-     */
-    private String url_mp4;
-    /**
      * 图片列表
      */
     private List<String> imgList;
@@ -90,14 +86,6 @@ public class NewsDetailBean {
 
     public void setCover(String cover) {
         this.cover = cover;
-    }
-
-    public String getUrl_mp4() {
-        return url_mp4;
-    }
-
-    public void setUrl_mp4(String url_mp4) {
-        this.url_mp4 = url_mp4;
     }
 
     public List<String> getImgList() {

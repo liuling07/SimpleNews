@@ -81,7 +81,7 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new NewsAdapter();
+        mAdapter = new NewsAdapter(getActivity().getApplicationContext());
         mAdapter.setOnItemClickListener(mOnItemClickListener);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setOnScrollListener(mOnScrollListener);
