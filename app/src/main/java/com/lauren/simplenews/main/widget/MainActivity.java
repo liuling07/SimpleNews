@@ -15,6 +15,7 @@ import com.lauren.simplenews.main.presenter.MainPresenter;
 import com.lauren.simplenews.main.presenter.MainPresenterImpl;
 import com.lauren.simplenews.main.view.MainView;
 import com.lauren.simplenews.news.widget.NewsFragment;
+import com.lauren.simplenews.weather.widget.WeatherFragment;
 
 /**
  * Author : lauren
@@ -93,12 +94,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void switch2Images() {
-
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new WeatherFragment()).commit();
+        mToolbar.setTitle(R.string.navigation_images);
     }
 
     @Override
     public void switch2Weather() {
-
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new WeatherFragment()).commit();
+        mToolbar.setTitle(R.string.navigation_weather);
     }
 
     @Override
