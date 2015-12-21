@@ -1,13 +1,16 @@
 package com.lauren.simplenews.utils;
 
-import java.util.concurrent.Executors;
-
 import android.content.Context;
 
+/**
+ * Description :
+ * Author : lauren
+ * Email  : lauren.liuling@gmail.com
+ * Blog   : http://www.liuling123.com
+ * Date   : 15/12/21
+ */
 public class DensityUtil {
 
-	
-	
 	public static final int getHeightInPx(Context context) {
 		final int height = context.getResources().getDisplayMetrics().heightPixels;
 		return height;
