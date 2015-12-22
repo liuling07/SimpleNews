@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.lauren.simplenews.R;
 import com.lauren.simplenews.about.widget.AboutFragment;
+import com.lauren.simplenews.images.widget.ImageFragment;
 import com.lauren.simplenews.main.presenter.MainPresenter;
 import com.lauren.simplenews.main.presenter.MainPresenterImpl;
 import com.lauren.simplenews.main.view.MainView;
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void switch2Images() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new WeatherFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new ImageFragment()).commit();
         mToolbar.setTitle(R.string.navigation_images);
     }
 

@@ -20,6 +20,11 @@
     <string name="cars">汽车</string>
     <string name="jokes">笑话</string>
 
+    <string name="jingxuan">精选</string>
+    <string name="qutu">趣图</string>
+    <string name="meitu">美图</string>
+    <string name="story">故事</string>
+
     <string name="load_fail">加载数据失败!</string>
     <string name="title_activity_news_detail">NewsDetailActivity</string>
 </resources>

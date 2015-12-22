@@ -58,7 +58,7 @@ public class NewsFragment extends Fragment {
         mViewPager.setAdapter(adapter);
     }
 
-    static class MyPagerAdapter extends FragmentPagerAdapter {
+    public static class MyPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragments = new ArrayList<>();
         private final List<String> mFragmentTitles = new ArrayList<>();
 

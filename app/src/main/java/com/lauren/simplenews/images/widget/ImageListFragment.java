@@ -1,9 +1,8 @@
-package com.lauren.simplenews.news.widget;
+package com.lauren.simplenews.images.widget;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
@@ -16,41 +15,42 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lauren.simplenews.R;
-import com.lauren.simplenews.beans.NewsBean;
+import com.lauren.simplenews.beans.ImageBean;
 import com.lauren.simplenews.commons.Urls;
-import com.lauren.simplenews.news.NewsAdapter;
-import com.lauren.simplenews.news.presenter.NewsPresenter;
-import com.lauren.simplenews.news.presenter.NewsPresenterImpl;
-import com.lauren.simplenews.news.view.NewsView;
+import com.lauren.simplenews.images.ImageAdapter;
+import com.lauren.simplenews.images.presenter.ImagePresenter;
+import com.lauren.simplenews.images.presenter.ImagePresenterImpl;
+import com.lauren.simplenews.images.view.ImageView;
+import com.lauren.simplenews.news.widget.NewsDetailActivity;
+import com.lauren.simplenews.news.widget.NewsFragment;
 import com.lauren.simplenews.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Description : 新闻Fragment
+ * Description :
  * Author : lauren
  * Email  : lauren.liuling@gmail.com
  * Blog   : http://www.liuling123.com
- * Date   : 15/12/13
+ * Date   : 15/12/22
  */
-public class NewsListFragment extends Fragment implements NewsView, SwipeRefreshLayout.OnRefreshListener {
-
-    private static final String TAG = "NewsListFragment";
+public class ImageListFragment extends Fragment implements ImageView, SwipeRefreshLayout.OnRefreshListener {
+    private static final String TAG = "ImageListFragment";
 
     private SwipeRefreshLayout mSwipeRefreshWidget;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
-    private NewsAdapter mAdapter;
-    private List<NewsBean> mData;
-    private NewsPresenter mNewsPresenter;
+    private ImageAdapter mAdapter;
+    private List<ImageBean> mData;
+    private ImagePresenter mImagePresenter;
 
     private int mType = NewsFragment.NEWS_TYPE_TOP;
     private int pageIndex = 0;
 
-    public static NewsListFragment newInstance(int type) {
+    public static ImageListFragment newInstance(int type) {
         Bundle args = new Bundle();
-        NewsListFragment fragment = new NewsListFragment();
+        ImageListFragment fragment = new ImageListFragment();
         args.putInt("type", type);
         fragment.setArguments(args);
         return fragment;
@@ -59,7 +59,7 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mNewsPresenter = new NewsPresenterImpl(this);
+        mImagePresenter = new ImagePresenterImpl(this);
         mType = getArguments().getInt("type");
     }
 
@@ -81,13 +81,29 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new NewsAdapter(getActivity().getApplicationContext());
+        mAdapter = new ImageAdapter(getActivity().getApplicationContext());
         mAdapter.setOnItemClickListener(mOnItemClickListener);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setOnScrollListener(mOnScrollListener);
         onRefresh();
         return view;
     }
+
+    private ImageAdapter.OnItemClickListener mOnItemClickListener = new ImageAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(View view, int position) {
+            ImageBean news = mAdapter.getItem(position);
+            Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+            intent.putExtra("news", news);
+
+            View transitionView = view.findViewById(R.id.ivNews);
+            ActivityOptionsCompat options =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
+                            transitionView, getString(R.string.transition_news_img));
+
+            ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
+        }
+    };
 
     private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
 
@@ -107,70 +123,33 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
                     && mAdapter.isShowFooter()) {
                 //加载更多
                 LogUtils.d(TAG, "loading more data");
-                mNewsPresenter.loadNews(mType, pageIndex + Urls.PAZE_SIZE);
+                mImagePresenter.loadImageList(mType, pageIndex + Urls.PAZE_SIZE);
             }
         }
     };
 
-    private NewsAdapter.OnItemClickListener mOnItemClickListener = new NewsAdapter.OnItemClickListener() {
-        @Override
-        public void onItemClick(View view, int position) {
-            NewsBean news = mAdapter.getItem(position);
-            Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
-            intent.putExtra("news", news);
-
-            View transitionView = view.findViewById(R.id.ivNews);
-            ActivityOptionsCompat options =
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
-                            transitionView, getString(R.string.transition_news_img));
-
-            ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
-        }
-    };
-
     @Override
-    public void showProgress() {
-        mSwipeRefreshWidget.setRefreshing(true);
+    public void onRefresh() {
+        pageIndex = 0;
+        mImagePresenter.loadImageList(mType, pageIndex);
     }
 
     @Override
-    public void addNews(List<NewsBean> newsList) {
+    public void addImages(List<ImageBean> list) {
         mAdapter.isShowFooter(true);
         if(mData == null) {
-            mData = new ArrayList<NewsBean>();
+            mData = new ArrayList<ImageBean>();
         }
-        mData.addAll(newsList);
+        mData.addAll(list);
         if(pageIndex == 0) {
             mAdapter.setmDate(mData);
         } else {
             //如果没有更多数据了,则隐藏footer布局
-            if(newsList == null || newsList.size() == 0) {
+            if(list == null || list.size() == 0) {
                 mAdapter.isShowFooter(false);
             }
             mAdapter.notifyDataSetChanged();
         }
         pageIndex += Urls.PAZE_SIZE;
     }
-
-
-    @Override
-    public void hideProgress() {
-        mSwipeRefreshWidget.setRefreshing(false);
-    }
-
-    @Override
-    public void showLoadFailMsg() {
-        if(pageIndex == 0) {
-            mAdapter.isShowFooter(false);
-            mAdapter.notifyDataSetChanged();
-        }
-        Snackbar.make(getActivity().findViewById(R.id.drawer_layout), getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onRefresh() {
-        pageIndex = 0;
-        mNewsPresenter.loadNews(mType, pageIndex);
-    }
-
 }

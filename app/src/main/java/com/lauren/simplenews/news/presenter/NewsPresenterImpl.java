@@ -1,7 +1,5 @@
 package com.lauren.simplenews.news.presenter;
 
-import android.content.Context;
-
 import com.lauren.simplenews.beans.NewsBean;
 import com.lauren.simplenews.commons.Urls;
 import com.lauren.simplenews.news.model.NewsModel;
@@ -23,12 +21,10 @@ public class NewsPresenterImpl implements NewsPresenter, NewsModelImpl.OnLoadNew
 
     private static final String TAG = "NewsPresenterImpl";
 
-    private Context mContext;
     private NewsView mNewsView;
     private NewsModel mNewsModel;
 
-    public NewsPresenterImpl(Context context, NewsView newsView) {
-        this.mContext = context;
+    public NewsPresenterImpl(NewsView newsView) {
         this.mNewsView = newsView;
         this.mNewsModel = new NewsModelImpl();
     }
