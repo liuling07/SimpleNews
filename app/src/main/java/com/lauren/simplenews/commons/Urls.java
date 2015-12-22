@@ -45,5 +45,10 @@ public class Urls {
     // 故事列表
     public static final String GUSHI_ID = "http://api.sina.cn/sinago/list.json?channel=hdpic_story&adid=4ad30dabe134695c3b7c3a65977d7e72&wm=b207&from=6042095012&chwm=12050_0001&oldchwm=12050_0001&imei=867064013906290&uid=802909da86d9f5fc&p=";
 
+    // 天气预报url
+    public static final String WEATHER = "http://wthrcdn.etouch.cn/weather_mini?city=";
+
+    //百度定位
+    public static final String INTERFACE_LOCATION = "http://api.map.baidu.com/geocoder";
 
 }

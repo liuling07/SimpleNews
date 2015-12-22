@@ -1,5 +1,6 @@
 package com.lauren.simplenews.beans;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  * Blog   : http://www.liuling123.com
  * Date   : 15/12/19
  */
-public class NewsDetailBean {
+public class NewsDetailBean implements Serializable {
     /**
      * docid
      */
