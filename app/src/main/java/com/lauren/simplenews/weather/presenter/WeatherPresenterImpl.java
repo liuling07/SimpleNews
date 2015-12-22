@@ -3,6 +3,7 @@ package com.lauren.simplenews.weather.presenter;
 import android.content.Context;
 
 import com.lauren.simplenews.beans.WeatherBean;
+import com.lauren.simplenews.utils.ToolsUtil;
 import com.lauren.simplenews.weather.model.WeatherModel;
 import com.lauren.simplenews.weather.model.WeatherModelImpl;
 import com.lauren.simplenews.weather.view.WeatherView;
@@ -31,16 +32,24 @@ public class WeatherPresenterImpl implements WeatherPresenter, WeatherModelImpl.
     @Override
     public void loadWeatherData() {
         mWeatherView.showProgress();
+        if(!ToolsUtil.isNetworkAvailable(mContext)) {
+            mWeatherView.hideProgress();
+            mWeatherView.showErrorToast("无网络连接");
+            return;
+        }
+
         WeatherModelImpl.LoadLocationListener listener = new WeatherModelImpl.LoadLocationListener() {
             @Override
             public void onSuccess(String cityName) {
                 //定位成功，获取定位城市天气预报
+                mWeatherView.setCity(cityName);
                 mWeatherModel.loadWeatherData(cityName, WeatherPresenterImpl.this);
             }
 
             @Override
             public void onFailure(String msg, Exception e) {
                 mWeatherView.showErrorToast("定位失败");
+                mWeatherView.setCity("深圳");
                 mWeatherModel.loadWeatherData("深圳", WeatherPresenterImpl.this);
             }
         };

@@ -1,7 +1,5 @@
 package com.lauren.simplenews.news.model;
 
-import com.lauren.simplenews.utils.OkHttpUtils;
-
 /**
  * Description :
  * Author : lauren
@@ -11,8 +9,8 @@ import com.lauren.simplenews.utils.OkHttpUtils;
  */
 public interface NewsModel {
 
-    void loadNews(String url, OkHttpUtils.ResultCallback callback);
+    void loadNews(String url, int type, NewsModelImpl.OnLoadNewsListListener listener);
 
-    void loadNewsDetail(String url, OkHttpUtils.ResultCallback callback);
+    void loadNewsDetail(String docid, NewsModelImpl.OnLoadNewsDetailListener listener);
 
 }

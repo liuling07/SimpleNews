@@ -17,6 +17,7 @@ public interface WeatherView {
     void hideProgress();
     void showWeatherLayout();
 
+    void setCity(String city);
     void setToday(String data);
     void setTemperature(String temperature);
     void setWind(String wind);

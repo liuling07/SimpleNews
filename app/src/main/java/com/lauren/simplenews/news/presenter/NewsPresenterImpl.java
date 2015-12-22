@@ -4,13 +4,11 @@ import android.content.Context;
 
 import com.lauren.simplenews.beans.NewsBean;
 import com.lauren.simplenews.commons.Urls;
-import com.lauren.simplenews.news.NewsJsonUtils;
 import com.lauren.simplenews.news.model.NewsModel;
 import com.lauren.simplenews.news.model.NewsModelImpl;
 import com.lauren.simplenews.news.view.NewsView;
 import com.lauren.simplenews.news.widget.NewsFragment;
 import com.lauren.simplenews.utils.LogUtils;
-import com.lauren.simplenews.utils.OkHttpUtils;
 
 import java.util.List;
 
@@ -21,7 +19,7 @@ import java.util.List;
  * Blog   : http://www.liuling123.com
  * Date   : 15/12/18
  */
-public class NewsPresenterImpl implements NewsPresenter {
+public class NewsPresenterImpl implements NewsPresenter, NewsModelImpl.OnLoadNewsListListener {
 
     private static final String TAG = "NewsPresenterImpl";
 
@@ -43,25 +41,7 @@ public class NewsPresenterImpl implements NewsPresenter {
         if(pageIndex == 0) {
             mNewsView.showProgress();
         }
-        OkHttpUtils.ResultCallback<String> loadNewsCallback = new OkHttpUtils.ResultCallback<String>() {
-            @Override
-            public void onSuccess(String response) {
-                List<NewsBean> newsBeanList = NewsJsonUtils.readJsonNewsBeans(response, getID(type));
-                mNewsView.hideProgress();
-                if(pageIndex == 0) {
-                    mNewsView.showNews(newsBeanList);
-                } else {
-                    mNewsView.addNews(newsBeanList);
-                }
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                mNewsView.hideProgress();
-                mNewsView.showLoadFailMsg();
-            }
-        };
-        mNewsModel.loadNews(url, loadNewsCallback);
+        mNewsModel.loadNews(url, type, this);
     }
 
     /**
@@ -93,31 +73,17 @@ public class NewsPresenterImpl implements NewsPresenter {
         return sb.toString();
     }
 
-    /**
-     * 获取ID
-     * @param type
-     * @return
-     */
-    private String getID(int type) {
-        String id;
-        switch (type) {
-            case NewsFragment.NEWS_TYPE_TOP:
-                id = Urls.TOP_ID;
-                break;
-            case NewsFragment.NEWS_TYPE_NBA:
-                id = Urls.NBA_ID;
-                break;
-            case NewsFragment.NEWS_TYPE_CARS:
-                id = Urls.CAR_ID;
-                break;
-            case NewsFragment.NEWS_TYPE_JOKES:
-                id = Urls.JOKE_ID;
-                break;
-            default:
-                id = Urls.TOP_ID;
-                break;
-        }
-        return id;
+
+
+    @Override
+    public void onSuccess(List<NewsBean> list) {
+        mNewsView.hideProgress();
+        mNewsView.addNews(list);
     }
 
+    @Override
+    public void onFailure(String msg, Exception e) {
+        mNewsView.hideProgress();
+        mNewsView.showLoadFailMsg();
+    }
 }

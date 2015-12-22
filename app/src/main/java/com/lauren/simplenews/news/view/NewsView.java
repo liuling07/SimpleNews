@@ -15,8 +15,6 @@ public interface NewsView {
 
     void showProgress();
 
-    void showNews(List<NewsBean> newsList);
-
     void addNews(List<NewsBean> newsList);
 
     void hideProgress();

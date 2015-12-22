@@ -12,7 +12,7 @@ import com.lauren.simplenews.beans.NewsBean;
 import com.lauren.simplenews.news.presenter.NewsDetailPresenter;
 import com.lauren.simplenews.news.presenter.NewsDetailPresenterImpl;
 import com.lauren.simplenews.news.view.NewsDetailView;
-import com.lauren.simplenews.utils.DensityUtil;
+import com.lauren.simplenews.utils.ToolsUtil;
 import com.lauren.simplenews.utils.ImageLoaderUtils;
 
 import org.sufficientlysecure.htmltextview.HtmlTextView;
@@ -53,7 +53,7 @@ public class NewsDetailActivity extends SwipeBackActivity implements NewsDetailV
         });
 
         mSwipeBackLayout = getSwipeBackLayout();
-        mSwipeBackLayout.setEdgeSize(DensityUtil.getWidthInPx(this));
+        mSwipeBackLayout.setEdgeSize(ToolsUtil.getWidthInPx(this));
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
 
         mNews = (NewsBean) getIntent().getSerializableExtra("news");

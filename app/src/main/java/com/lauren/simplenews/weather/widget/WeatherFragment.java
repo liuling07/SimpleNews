@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -35,9 +36,11 @@ public class WeatherFragment extends Fragment implements WeatherView {
     private TextView mTodayTemperatureTV;
     private TextView mTodayWindTV;
     private TextView mTodayWeatherTV;
+    private TextView mCityTV;
     private ProgressBar mProgressBar;
     private LinearLayout mWeatherLayout;
     private LinearLayout mWeatherContentLayout;
+    private FrameLayout mRootLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,16 +56,18 @@ public class WeatherFragment extends Fragment implements WeatherView {
         mTodayTemperatureTV = (TextView) view.findViewById(R.id.weatherTemp);
         mTodayWindTV = (TextView) view.findViewById(R.id.wind);
         mTodayWeatherTV = (TextView) view.findViewById(R.id.weather);
+        mCityTV = (TextView)view.findViewById(R.id.city);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
         mWeatherLayout = (LinearLayout) view.findViewById(R.id.weather_layout);
         mWeatherContentLayout = (LinearLayout) view.findViewById(R.id.weather_content);
+        mRootLayout = (FrameLayout) view.findViewById(R.id.root_layout);
         mWeatherPresenter.loadWeatherData();
         return view;
     }
 
     @Override
     public void showProgress() {
-        mWeatherLayout.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -73,6 +78,11 @@ public class WeatherFragment extends Fragment implements WeatherView {
     @Override
     public void showWeatherLayout() {
         mWeatherLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setCity(String city) {
+        mCityTV.setText(city);
     }
 
     @Override
@@ -123,6 +133,6 @@ public class WeatherFragment extends Fragment implements WeatherView {
 
     @Override
     public void showErrorToast(String msg) {
-        Snackbar.make(getView(), msg, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(getActivity().findViewById(R.id.drawer_layout), msg, Snackbar.LENGTH_SHORT).show();
     }
 }

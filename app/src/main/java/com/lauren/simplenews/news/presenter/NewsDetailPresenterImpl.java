@@ -3,12 +3,9 @@ package com.lauren.simplenews.news.presenter;
 import android.content.Context;
 
 import com.lauren.simplenews.beans.NewsDetailBean;
-import com.lauren.simplenews.commons.Urls;
-import com.lauren.simplenews.news.NewsJsonUtils;
 import com.lauren.simplenews.news.model.NewsModel;
 import com.lauren.simplenews.news.model.NewsModelImpl;
 import com.lauren.simplenews.news.view.NewsDetailView;
-import com.lauren.simplenews.utils.OkHttpUtils;
 
 /**
  * Description :
@@ -17,7 +14,7 @@ import com.lauren.simplenews.utils.OkHttpUtils;
  * Blog   : http://www.liuling123.com
  * Date   : 2015/12/21
  */
-public class NewsDetailPresenterImpl implements NewsDetailPresenter {
+public class NewsDetailPresenterImpl implements NewsDetailPresenter, NewsModelImpl.OnLoadNewsDetailListener {
 
     private Context mContent;
     private NewsDetailView mNewsDetailView;
@@ -32,27 +29,20 @@ public class NewsDetailPresenterImpl implements NewsDetailPresenter {
     @Override
     public void loadNewsDetail(final String docId) {
         mNewsDetailView.showProgress();
-        OkHttpUtils.ResultCallback<String> loadNewsCallback = new OkHttpUtils.ResultCallback<String>() {
-            @Override
-            public void onSuccess(String response) {
-                NewsDetailBean newsDetailBean = NewsJsonUtils.readJsonNewsDetailBeans(response, docId);
-                if(newsDetailBean != null) {
-                    mNewsDetailView.showNewsDetialContent(newsDetailBean.getBody());
-                }
-                mNewsDetailView.hideProgress();
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                mNewsDetailView.hideProgress();
-            }
-        };
-        mNewsModel.loadNewsDetail(getDetailUrl(docId), loadNewsCallback);
+        mNewsModel.loadNewsDetail(docId, this);
     }
 
-    private String getDetailUrl(String docId) {
-        StringBuffer sb = new StringBuffer(Urls.NEW_DETAIL);
-        sb.append(docId).append(Urls.END_DETAIL_URL);
-        return sb.toString();
+
+    @Override
+    public void onSuccess(NewsDetailBean newsDetailBean) {
+        if(newsDetailBean != null) {
+            mNewsDetailView.showNewsDetialContent(newsDetailBean.getBody());
+        }
+        mNewsDetailView.hideProgress();
+    }
+
+    @Override
+    public void onFailure(String msg, Exception e) {
+        mNewsDetailView.hideProgress();
     }
 }

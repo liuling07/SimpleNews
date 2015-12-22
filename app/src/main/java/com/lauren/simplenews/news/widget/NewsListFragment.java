@@ -134,26 +134,22 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
     }
 
     @Override
-    public void showNews(List<NewsBean> newsList) {
-        mData = newsList;
-        if(mData == null) {
-            mData = new ArrayList<NewsBean>();
-        }
-        mAdapter.setmDate(mData);
-    }
-
-    @Override
     public void addNews(List<NewsBean> newsList) {
+        mAdapter.isShowFooter(true);
         if(mData == null) {
             mData = new ArrayList<NewsBean>();
         }
         mData.addAll(newsList);
-        mAdapter.notifyDataSetChanged();
-        pageIndex += Urls.PAZE_SIZE;
-        //如果没有更多数据了,则隐藏footer布局
-        if(newsList == null || newsList.size() == 0) {
-            mAdapter.isShowFooter(false);
+        if(pageIndex == 0) {
+            mAdapter.setmDate(mData);
+        } else {
+            //如果没有更多数据了,则隐藏footer布局
+            if(newsList == null || newsList.size() == 0) {
+                mAdapter.isShowFooter(false);
+            }
+            mAdapter.notifyDataSetChanged();
         }
+        pageIndex += Urls.PAZE_SIZE;
     }
 
 
@@ -164,7 +160,11 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
 
     @Override
     public void showLoadFailMsg() {
-        Snackbar.make(mRecyclerView.getRootView(), getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
+        if(pageIndex == 0) {
+            mAdapter.isShowFooter(false);
+            mAdapter.notifyDataSetChanged();
+        }
+        Snackbar.make(getActivity().findViewById(R.id.drawer_layout), getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

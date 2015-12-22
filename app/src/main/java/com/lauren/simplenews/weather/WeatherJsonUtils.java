@@ -55,7 +55,6 @@ public class WeatherJsonUtils {
         if (TextUtils.isEmpty(json)) {
             return list;
         }
-        //WeatherBean weatherBean = null;
         JsonParser parser = new JsonParser();
         JsonObject jsonObj = parser.parse(json).getAsJsonObject();
         String status = jsonObj.get("status").getAsString();

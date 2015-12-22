@@ -17,6 +17,7 @@ import java.lang.reflect.Type;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Description : OkHttp网络连接封装工具类
@@ -35,6 +36,9 @@ public class OkHttpUtils {
 
     private OkHttpUtils() {
         mOkHttpClient = new OkHttpClient();
+        mOkHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
+        mOkHttpClient.setWriteTimeout(10, TimeUnit.SECONDS);
+        mOkHttpClient.setReadTimeout(30, TimeUnit.SECONDS);
         //cookie enabled
         mOkHttpClient.setCookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_ORIGINAL_SERVER));
         mDelivery = new Handler(Looper.getMainLooper());
