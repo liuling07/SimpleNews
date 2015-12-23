@@ -25,17 +25,19 @@ public class ImagePresenterImpl implements ImagePresenter, ImageModelImpl.OnLoad
     }
 
     @Override
-    public void loadImageList(int type, int pageIndex) {
-        mImageModel.loadImageList(type, pageIndex, this);
+    public void loadImageList() {
+        mImageView.showProgress();
+        mImageModel.loadImageList(this);
     }
 
     @Override
     public void onSuccess(List<ImageBean> list) {
         mImageView.addImages(list);
+        mImageView.hideProgress();
     }
 
     @Override
     public void onFailure(String msg, Exception e) {
-
+        mImageView.hideProgress();
     }
 }

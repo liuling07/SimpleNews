@@ -13,4 +13,7 @@ import java.util.List;
  */
 public interface ImageView {
     void addImages(List<ImageBean> list);
+    void showProgress();
+    void hideProgress();
+
 }

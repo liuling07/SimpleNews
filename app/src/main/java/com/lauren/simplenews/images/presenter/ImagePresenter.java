@@ -8,5 +8,5 @@ package com.lauren.simplenews.images.presenter;
  * Date   : 15/12/22
  */
 public interface ImagePresenter {
-    void loadImageList(int type, int pageIndex);
+    void loadImageList();
 }

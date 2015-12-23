@@ -34,15 +34,13 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/sn_16sp"
-                android:singleLine="true"
-                android:text="湖人大战勇士"/>
+                android:singleLine="true"/>
 
             <TextView
                 android:id="@+id/tvDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="湖人大战勇士"
                 android:textColor="@color/secondary_text"
                 android:maxLines="2"
                 android:textSize="@dimen/sn_12sp"/>

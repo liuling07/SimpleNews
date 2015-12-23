@@ -12,26 +12,12 @@ import java.io.Serializable;
 public class ImageBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    /**
-     * id
-     */
-    private String id;
-    /**
-     * title
-     */
+
     private String title;
-    /**
-     * pic
-     */
-    private String pic;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    private String thumburl;
+    private String sourceurl;
+    private int height;
+    private int width;
 
     public String getTitle() {
         return title;
@@ -41,11 +27,35 @@ public class ImageBean implements Serializable {
         this.title = title;
     }
 
-    public String getPic() {
-        return pic;
+    public String getThumburl() {
+        return thumburl;
     }
 
-    public void setPic(String pic) {
-        this.pic = pic;
+    public void setThumburl(String thumburl) {
+        this.thumburl = thumburl;
+    }
+
+    public String getSourceurl() {
+        return sourceurl;
+    }
+
+    public void setSourceurl(String sourceurl) {
+        this.sourceurl = sourceurl;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
     }
 }

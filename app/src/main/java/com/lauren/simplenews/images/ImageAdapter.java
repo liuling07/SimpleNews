@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lauren.simplenews.R;
 import com.lauren.simplenews.beans.ImageBean;
 import com.lauren.simplenews.utils.ImageLoaderUtils;
+import com.lauren.simplenews.utils.ToolsUtil;
 
 import java.util.List;
 
@@ -21,18 +23,20 @@ import java.util.List;
  * Blog   : http://www.liuling123.com
  * Date   : 15/12/19
  */
-public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static final int TYPE_ITEM = 0;
-    private static final int TYPE_FOOTER = 1;
+public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ItemViewHolder> {
 
     private List<ImageBean> mData;
-    private boolean mShowFooter = true;
     private Context mContext;
+    private int mMaxWidth;
+    private int mMaxHeight;
 
     private OnItemClickListener mOnItemClickListener;
 
     public ImageAdapter(Context context) {
         this.mContext = context;
+        mMaxWidth = ToolsUtil.getWidthInPx(mContext) - 20;
+        mMaxHeight = ToolsUtil.getHeightInPx(mContext) - ToolsUtil.getStatusHeight(mContext) -
+                ToolsUtil.dip2px(mContext, 96);
     }
 
     public void setmDate(List<ImageBean> data) {
@@ -41,83 +45,48 @@ public class ImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
-    public int getItemViewType(int position) {
-        // 最后一个item设置为footerView
-        if(!mShowFooter) {
-            return TYPE_ITEM;
-        }
-        if (position + 1 == getItemCount()) {
-            return TYPE_FOOTER;
-        } else {
-            return TYPE_ITEM;
-        }
-    }
-
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
+    public ImageAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent,
                                                       int viewType) {
-        if(viewType == TYPE_ITEM) {
-            View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_image, parent, false);
-            ItemViewHolder vh = new ItemViewHolder(v);
-            return vh;
-        } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.footer, null);
-            view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT));
-            return new FooterViewHolder(view);
-        }
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_image, parent, false);
+        ItemViewHolder vh = new ItemViewHolder(v);
+        return vh;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof ItemViewHolder) {
-
-            ImageBean imageBean = mData.get(position);
-            if(imageBean == null) {
-                return;
-            }
-            ((ItemViewHolder) holder).mTitle.setText(imageBean.getTitle());
-            ImageLoaderUtils.display(mContext, ((ItemViewHolder) holder).mImage, imageBean.getPic());
+    public void onBindViewHolder(ImageAdapter.ItemViewHolder holder, int position) {
+        ImageBean imageBean = mData.get(position);
+        if(imageBean == null) {
+            return;
         }
+        holder.mTitle.setText(imageBean.getTitle());
+        float scale = (float)imageBean.getWidth() / (float) mMaxWidth;
+        int height = (int)(imageBean.getHeight() / scale);
+        if(height > mMaxHeight) {
+            height = mMaxHeight;
+        }
+        holder.mImage.setLayoutParams(new LinearLayout.LayoutParams(mMaxWidth, height));
+        ImageLoaderUtils.display(mContext, holder.mImage, imageBean.getThumburl());
     }
 
     @Override
     public int getItemCount() {
-        int begin = mShowFooter?1:0;
         if(mData == null) {
-            return begin;
+            return 0;
         }
-        return mData.size() + begin;
+        return mData.size();
     }
 
     public ImageBean getItem(int position) {
         return mData == null ? null : mData.get(position);
     }
 
-    public void isShowFooter(boolean showFooter) {
-        this.mShowFooter = showFooter;
-    }
-
-    public boolean isShowFooter() {
-        return this.mShowFooter;
-    }
-
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
 
-    public class FooterViewHolder extends RecyclerView.ViewHolder {
-
-        public FooterViewHolder(View view) {
-            super(view);
-        }
-
-    }
-
     public interface OnItemClickListener {
-        public void onItemClick(View view, int position);
+        void onItemClick(View view, int position);
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

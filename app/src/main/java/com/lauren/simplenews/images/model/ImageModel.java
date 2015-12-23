@@ -8,5 +8,5 @@ package com.lauren.simplenews.images.model;
  * Date   : 15/12/22
  */
 public interface ImageModel {
-    void loadImageList(int type, int pageIndex, ImageModelImpl.OnLoadImageListListener listener);
+    void loadImageList(ImageModelImpl.OnLoadImageListListener listener);
 }

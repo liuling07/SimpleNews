@@ -29,9 +29,7 @@ public class ImageJsonUtils {
         List<ImageBean> beans = new ArrayList<ImageBean>();
         try {
             JsonParser parser = new JsonParser();
-            JsonObject jsonObj = parser.parse(res).getAsJsonObject();
-            JsonObject data = jsonObj.get("data").getAsJsonObject();
-            JsonArray jsonArray = data.getAsJsonArray("list");
+            JsonArray jsonArray = parser.parse(res).getAsJsonArray();
             for (int i = 1; i < jsonArray.size(); i++) {
                 JsonObject jo = jsonArray.get(i).getAsJsonObject();
                 ImageBean news = JsonUtils.deserialize(jo, ImageBean.class);

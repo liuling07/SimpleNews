@@ -1,16 +1,30 @@
 package com.lauren.simplenews.images.widget;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.lauren.simplenews.R;
-import com.lauren.simplenews.news.widget.NewsFragment;
+import com.lauren.simplenews.beans.ImageBean;
+import com.lauren.simplenews.images.ImageAdapter;
+import com.lauren.simplenews.images.presenter.ImagePresenter;
+import com.lauren.simplenews.images.presenter.ImagePresenterImpl;
+import com.lauren.simplenews.images.view.ImageView;
+import com.lauren.simplenews.news.widget.NewsDetailActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description :
@@ -19,38 +33,106 @@ import com.lauren.simplenews.news.widget.NewsFragment;
  * Blog   : http://www.liuling123.com
  * Date   : 15/12/22
  */
-public class ImageFragment extends Fragment {
-    public static final int IMAGE_TYPE_JINGXUAN = 0;
-    public static final int IMAGE_TYPE_QUTU = 1;
-    public static final int IMAGE_TYPE_MEITU = 2;
-    public static final int IMAGE_TYPE_GUSHI = 3;
+public class ImageFragment extends Fragment implements ImageView, SwipeRefreshLayout.OnRefreshListener {
 
-    private TabLayout mTablayout;
-    private ViewPager mViewPager;
+    private static final String TAG = "ImageFragment";
+
+    private SwipeRefreshLayout mSwipeRefreshWidget;
+    private RecyclerView mRecyclerView;
+    private LinearLayoutManager mLayoutManager;
+    private ImageAdapter mAdapter;
+    private List<ImageBean> mData;
+    private ImagePresenter mImagePresenter;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mImagePresenter = new ImagePresenterImpl(this);
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_news, null);
-        mTablayout = (TabLayout) view.findViewById(R.id.tab_layout);
-        mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
-        mViewPager.setOffscreenPageLimit(3);
-        setupViewPager(mViewPager);
-        mTablayout.addTab(mTablayout.newTab().setText(R.string.jingxuan));
-        mTablayout.addTab(mTablayout.newTab().setText(R.string.qutu));
-        mTablayout.addTab(mTablayout.newTab().setText(R.string.meitu));
-        mTablayout.addTab(mTablayout.newTab().setText(R.string.story));
-        mTablayout.setupWithViewPager(mViewPager);
+        View view = inflater.inflate(R.layout.fragment_image, null);
+        mSwipeRefreshWidget = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_widget);
+        mSwipeRefreshWidget.setColorSchemeResources(R.color.primary,
+                R.color.primary_dark, R.color.primary_light,
+                R.color.accent);
+        mSwipeRefreshWidget.setOnRefreshListener(this);
+
+        mRecyclerView = (RecyclerView)view.findViewById(R.id.recycle_view);
+        mRecyclerView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mAdapter = new ImageAdapter(getActivity().getApplicationContext());
+        mAdapter.setOnItemClickListener(mOnItemClickListener);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setOnScrollListener(mOnScrollListener);
+        onRefresh();
         return view;
     }
 
-    private void setupViewPager(ViewPager mViewPager) {
-        //Fragment中嵌套使用Fragment一定要使用getChildFragmentManager(),否则会有问题
-        NewsFragment.MyPagerAdapter adapter = new NewsFragment.MyPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(ImageListFragment.newInstance(IMAGE_TYPE_JINGXUAN), getString(R.string.jingxuan));
-        adapter.addFragment(ImageListFragment.newInstance(IMAGE_TYPE_QUTU), getString(R.string.qutu));
-        adapter.addFragment(ImageListFragment.newInstance(IMAGE_TYPE_MEITU), getString(R.string.meitu));
-        adapter.addFragment(ImageListFragment.newInstance(IMAGE_TYPE_GUSHI), getString(R.string.story));
-        mViewPager.setAdapter(adapter);
+    private ImageAdapter.OnItemClickListener mOnItemClickListener = new ImageAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(View view, int position) {
+            ImageBean news = mAdapter.getItem(position);
+            Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+            intent.putExtra("news", news);
+
+            View transitionView = view.findViewById(R.id.ivNews);
+            ActivityOptionsCompat options =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
+                            transitionView, getString(R.string.transition_news_img));
+
+            ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
+        }
+    };
+
+    private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
+
+        private int lastVisibleItem;
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
+        }
+
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            if (newState == RecyclerView.SCROLL_STATE_IDLE
+                    && lastVisibleItem + 1 == mAdapter.getItemCount() ) {
+                //加载更多
+                Snackbar.make(getActivity().findViewById(R.id.drawer_layout), getString(R.string.image_hit), Snackbar.LENGTH_SHORT).show();
+            }
+        }
+    };
+
+    @Override
+    public void onRefresh() {
+        mImagePresenter.loadImageList();
+    }
+
+    @Override
+    public void addImages(List<ImageBean> list) {
+        if(mData == null) {
+            mData = new ArrayList<ImageBean>();
+        }
+        mData.addAll(list);
+        mAdapter.setmDate(mData);
+    }
+
+    @Override
+    public void showProgress() {
+        mSwipeRefreshWidget.setRefreshing(true);
+    }
+
+    @Override
+    public void hideProgress() {
+        mSwipeRefreshWidget.setRefreshing(false);
     }
 }
