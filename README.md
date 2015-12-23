@@ -3,19 +3,19 @@
 
 # Screenshot
 ###### 新闻列表
-![image](https://raw.githubusercontent.com/liuling07/SimpleNews/master/news.png)
+![image](https://raw.githubusercontent.com/liuling07/SimpleNews/master/screenshot/news.png)
 <br/>
 ###### 图片列表
-![image](https://raw.githubusercontent.com/liuling07/SimpleNews/master/images.jpg)
+![image](https://raw.githubusercontent.com/liuling07/SimpleNews/master/screenshot/images.jpg)
 <br/>
 ###### 天气
-![image](https://raw.githubusercontent.com/liuling07/SimpleNews/master/weather.jpg)
+![image](https://raw.githubusercontent.com/liuling07/SimpleNews/master/screenshot/weather.jpg)
 <br/>
 ###### 侧滑菜单
-![image](https://raw.githubusercontent.com/liuling07/SimpleNews/master/drawer.jpg)
+![image](https://raw.githubusercontent.com/liuling07/SimpleNews/master/screenshot/drawer.jpg)
 <br/>
 ###### gif图
-![image](https://raw.githubusercontent.com/liuling07/SimpleNews/master/example.gif)
+![image](https://raw.githubusercontent.com/liuling07/SimpleNews/master/screenshot/example.gif)
 
 # About me
 * Blog:[http://www.liuling123.com](http://www.liuling123.com)
