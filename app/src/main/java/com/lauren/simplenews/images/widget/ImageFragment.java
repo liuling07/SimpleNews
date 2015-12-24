@@ -114,6 +114,9 @@ public class ImageFragment extends Fragment implements ImageView, SwipeRefreshLa
 
     @Override
     public void onRefresh() {
+        if(mData != null) {
+            mData.clear();
+        }
         mImagePresenter.loadImageList();
     }
 

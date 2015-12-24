@@ -170,6 +170,9 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
     @Override
     public void onRefresh() {
         pageIndex = 0;
+        if(mData != null) {
+            mData.clear();
+        }
         mNewsPresenter.loadNews(mType, pageIndex);
     }
 
