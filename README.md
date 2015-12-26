@@ -12,7 +12,7 @@
 ![image](https://raw.githubusercontent.com/liuling07/SimpleNews/master/screenshot/weather.jpg)
 <br/>
 ###### 侧滑菜单
-![image](https://raw.githubusercontent.com/liuling07/SimpleNews/master/screenshot/drawer.jpg)
+![image](https://raw.githubusercontent.com/liuling07/SimpleNews/master/screenshot/drawer.png)
 <br/>
 ###### gif图
 ![image](https://raw.githubusercontent.com/liuling07/SimpleNews/master/screenshot/example.gif)
