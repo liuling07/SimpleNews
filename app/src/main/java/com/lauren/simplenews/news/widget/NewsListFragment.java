@@ -164,7 +164,8 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
             mAdapter.isShowFooter(false);
             mAdapter.notifyDataSetChanged();
         }
-        Snackbar.make(getActivity().findViewById(R.id.drawer_layout), getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
+        View view = getActivity() == null ? mRecyclerView.getRootView() : getActivity().findViewById(R.id.drawer_layout);
+        Snackbar.make(view, getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

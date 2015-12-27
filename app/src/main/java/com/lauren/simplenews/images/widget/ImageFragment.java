@@ -1,11 +1,8 @@
 package com.lauren.simplenews.images.widget;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -21,7 +18,6 @@ import com.lauren.simplenews.images.ImageAdapter;
 import com.lauren.simplenews.images.presenter.ImagePresenter;
 import com.lauren.simplenews.images.presenter.ImagePresenterImpl;
 import com.lauren.simplenews.images.view.ImageView;
-import com.lauren.simplenews.news.widget.NewsDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,28 +64,11 @@ public class ImageFragment extends Fragment implements ImageView, SwipeRefreshLa
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter = new ImageAdapter(getActivity().getApplicationContext());
-        mAdapter.setOnItemClickListener(mOnItemClickListener);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setOnScrollListener(mOnScrollListener);
         onRefresh();
         return view;
     }
-
-    private ImageAdapter.OnItemClickListener mOnItemClickListener = new ImageAdapter.OnItemClickListener() {
-        @Override
-        public void onItemClick(View view, int position) {
-            ImageBean news = mAdapter.getItem(position);
-            Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
-            intent.putExtra("news", news);
-
-            View transitionView = view.findViewById(R.id.ivNews);
-            ActivityOptionsCompat options =
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
-                            transitionView, getString(R.string.transition_news_img));
-
-            ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
-        }
-    };
 
     private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
 
@@ -137,5 +116,11 @@ public class ImageFragment extends Fragment implements ImageView, SwipeRefreshLa
     @Override
     public void hideProgress() {
         mSwipeRefreshWidget.setRefreshing(false);
+    }
+
+    @Override
+    public void showLoadFailMsg() {
+        View view = getActivity() == null ? mRecyclerView.getRootView() : getActivity().findViewById(R.id.drawer_layout);
+        Snackbar.make(view, getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
     }
 }

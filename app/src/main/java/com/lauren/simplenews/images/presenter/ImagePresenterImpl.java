@@ -39,5 +39,6 @@ public class ImagePresenterImpl implements ImagePresenter, ImageModelImpl.OnLoad
     @Override
     public void onFailure(String msg, Exception e) {
         mImageView.hideProgress();
+        mImageView.showLoadFailMsg();
     }
 }
