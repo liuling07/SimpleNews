@@ -27,7 +27,7 @@
         <activity
             android:name=".news.widget.NewsDetailActivity"
             android:label="@string/title_activity_news_detail"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar.Translucent"></activity>
     </application>
 
 </manifest>
