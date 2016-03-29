@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.lauren.simplenews.R;
 import com.lauren.simplenews.beans.NewsBean;
+import com.lauren.simplenews.commons.BaseRecyclerAdapter;
 import com.lauren.simplenews.utils.ImageLoaderUtils;
 
 import java.util.List;
@@ -21,11 +22,10 @@ import java.util.List;
  * Blog   : http://www.liuling123.com
  * Date   : 15/12/19
  */
-public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class NewsAdapter extends BaseRecyclerAdapter<NewsBean, RecyclerView.ViewHolder> {
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
 
-    private List<NewsBean> mData;
     private boolean mShowFooter = true;
     private Context mContext;
 
@@ -35,10 +35,6 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.mContext = context;
     }
 
-    public void setmDate(List<NewsBean> data) {
-        this.mData = data;
-        this.notifyDataSetChanged();
-    }
 
     @Override
     public int getItemViewType(int position) {
@@ -74,7 +70,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof ItemViewHolder) {
 
-            NewsBean news = mData.get(position);
+            NewsBean news = getData(position);
             if(news == null) {
                 return;
             }
@@ -89,14 +85,10 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public int getItemCount() {
         int begin = mShowFooter?1:0;
-        if(mData == null) {
+        if(getDatas() == null || getDatas().isEmpty()) {
             return begin;
         }
-        return mData.size() + begin;
-    }
-
-    public NewsBean getItem(int position) {
-        return mData == null ? null : mData.get(position);
+        return getDatas().size() + begin;
     }
 
     public void isShowFooter(boolean showFooter) {

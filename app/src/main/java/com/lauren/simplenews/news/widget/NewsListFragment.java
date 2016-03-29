@@ -15,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lauren.simplenews.R;
 import com.lauren.simplenews.beans.NewsBean;
 import com.lauren.simplenews.commons.Urls;
@@ -37,12 +39,13 @@ import java.util.List;
 public class NewsListFragment extends Fragment implements NewsView, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "NewsListFragment";
+    private static final String EXTRA_NEWS = "NewsListFragment_news";
+    private static final String EXTRA_PAGE_NO = "NewsListFragment";
 
     private SwipeRefreshLayout mSwipeRefreshWidget;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private NewsAdapter mAdapter;
-    private List<NewsBean> mData;
     private NewsPresenter mNewsPresenter;
 
     private int mType = NewsFragment.NEWS_TYPE_TOP;
@@ -74,7 +77,7 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
                 R.color.accent);
         mSwipeRefreshWidget.setOnRefreshListener(this);
 
-        mRecyclerView = (RecyclerView)view.findViewById(R.id.recycle_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycle_view);
         mRecyclerView.setHasFixedSize(true);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -85,8 +88,24 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
         mAdapter.setOnItemClickListener(mOnItemClickListener);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnScrollListener(mOnScrollListener);
-        onRefresh();
+        if (savedInstanceState != null) {
+            String savedDataJson = savedInstanceState.getString(EXTRA_NEWS);
+            List<NewsBean> savedData = new Gson()
+                    .fromJson(savedDataJson, new TypeToken<List<NewsBean>>() {
+                    }.getType());
+            pageIndex = savedInstanceState.getInt(EXTRA_PAGE_NO);
+            addNews(savedData);
+        } else {
+            onRefresh();
+        }
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(EXTRA_NEWS, new Gson().toJson(mAdapter.getDatas()));
+        outState.putInt(EXTRA_PAGE_NO, pageIndex);
     }
 
     private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
@@ -115,7 +134,7 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
     private NewsAdapter.OnItemClickListener mOnItemClickListener = new NewsAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
-            NewsBean news = mAdapter.getItem(position);
+            NewsBean news = mAdapter.getData(position);
             Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
             intent.putExtra("news", news);
 
@@ -136,19 +155,14 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
     @Override
     public void addNews(List<NewsBean> newsList) {
         mAdapter.isShowFooter(true);
-        if(mData == null) {
-            mData = new ArrayList<NewsBean>();
+
+        mAdapter.addDatas(newsList);
+        //如果没有更多数据了,则隐藏footer布局
+        if (newsList == null || newsList.size() == 0) {
+            mAdapter.isShowFooter(false);
         }
-        mData.addAll(newsList);
-        if(pageIndex == 0) {
-            mAdapter.setmDate(mData);
-        } else {
-            //如果没有更多数据了,则隐藏footer布局
-            if(newsList == null || newsList.size() == 0) {
-                mAdapter.isShowFooter(false);
-            }
-            mAdapter.notifyDataSetChanged();
-        }
+        mAdapter.addDatas(newsList);
+        mAdapter.notifyDataSetChanged();
         pageIndex += Urls.PAZE_SIZE;
     }
 
@@ -160,7 +174,7 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
 
     @Override
     public void showLoadFailMsg() {
-        if(pageIndex == 0) {
+        if (pageIndex == 0) {
             mAdapter.isShowFooter(false);
             mAdapter.notifyDataSetChanged();
         }
@@ -171,9 +185,7 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
     @Override
     public void onRefresh() {
         pageIndex = 0;
-        if(mData != null) {
-            mData.clear();
-        }
+        mAdapter.clear();
         mNewsPresenter.loadNews(mType, pageIndex);
     }
 

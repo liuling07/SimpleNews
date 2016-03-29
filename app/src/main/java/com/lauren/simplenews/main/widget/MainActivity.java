@@ -1,7 +1,10 @@
 package com.lauren.simplenews.main.widget;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +35,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private NavigationView mNavigationView;
     private MainPresenter mMainPresenter;
 
+    private Fragment mCurrentFragment;
+    private NewsFragment mNewsFragment;
+    private ImageFragment mImageFragment;
+    private WeatherFragment mWeatherFragment;
+    private AboutFragment mAboutFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
         setupDrawerContent(mNavigationView);
 
         mMainPresenter = new MainPresenterImpl(this);
-
         switch2News();
     }
 
@@ -89,25 +97,54 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void switch2News() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new NewsFragment()).commit();
+        if (mNewsFragment == null) {
+            mNewsFragment = new NewsFragment();
+        }
+        showFragment(mNewsFragment);
         mToolbar.setTitle(R.string.navigation_news);
     }
 
     @Override
     public void switch2Images() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new ImageFragment()).commit();
+        if (mImageFragment == null) {
+            mImageFragment = new ImageFragment();
+        }
+        showFragment(mImageFragment);
         mToolbar.setTitle(R.string.navigation_images);
     }
 
     @Override
     public void switch2Weather() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new WeatherFragment()).commit();
+        if (mWeatherFragment == null) {
+            mWeatherFragment = new WeatherFragment();
+        }
+        showFragment(mWeatherFragment);
         mToolbar.setTitle(R.string.navigation_weather);
     }
 
     @Override
     public void switch2About() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new AboutFragment()).commit();
+        if (mAboutFragment == null) {
+            mAboutFragment = new AboutFragment();
+        }
+        showFragment(mAboutFragment);
         mToolbar.setTitle(R.string.navigation_about);
+    }
+
+    private void showFragment(@NonNull Fragment fragment) {
+        if (fragment == mCurrentFragment) {
+            return;
+        }
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (mCurrentFragment != null) {
+            transaction.hide(mCurrentFragment);
+        }
+        if (!fragment.isAdded()) {
+            transaction.add(R.id.frame_content, fragment);
+        } else {
+            transaction.show(fragment);
+        }
+        transaction.commit();
+        mCurrentFragment = fragment;
     }
 }
