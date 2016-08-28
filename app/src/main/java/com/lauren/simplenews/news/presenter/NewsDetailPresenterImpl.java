@@ -5,6 +5,7 @@ import android.content.Context;
 import com.lauren.simplenews.beans.NewsDetailBean;
 import com.lauren.simplenews.news.model.NewsModel;
 import com.lauren.simplenews.news.model.NewsModelImpl;
+import com.lauren.simplenews.news.model.OnLoadNewsDetailListener;
 import com.lauren.simplenews.news.view.NewsDetailView;
 
 /**
@@ -14,7 +15,7 @@ import com.lauren.simplenews.news.view.NewsDetailView;
  * Blog   : http://www.liuling123.com
  * Date   : 2015/12/21
  */
-public class NewsDetailPresenterImpl implements NewsDetailPresenter, NewsModelImpl.OnLoadNewsDetailListener {
+public class NewsDetailPresenterImpl implements NewsDetailPresenter, OnLoadNewsDetailListener {
 
     private Context mContent;
     private NewsDetailView mNewsDetailView;
@@ -35,7 +36,7 @@ public class NewsDetailPresenterImpl implements NewsDetailPresenter, NewsModelIm
 
     @Override
     public void onSuccess(NewsDetailBean newsDetailBean) {
-        if(newsDetailBean != null) {
+        if (newsDetailBean != null) {
             mNewsDetailView.showNewsDetialContent(newsDetailBean.getBody());
         }
         mNewsDetailView.hideProgress();

@@ -96,14 +96,4 @@ public class NewsModelImpl implements NewsModel {
         return sb.toString();
     }
 
-    public interface OnLoadNewsListListener {
-        void onSuccess(List<NewsBean> list);
-        void onFailure(String msg, Exception e);
-    }
-
-    public interface OnLoadNewsDetailListener {
-        void onSuccess(NewsDetailBean newsDetailBean);
-        void onFailure(String msg, Exception e);
-    }
-
 }
