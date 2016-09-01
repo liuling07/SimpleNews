@@ -26,9 +26,14 @@ import com.lauren.simplenews.utils.LogUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Administrator on 2016/9/1.
- */
+ /**
+- * Description : 新闻Fragment
+- * Author : lauren
+- * Email  : lauren.liuling@gmail.com
+- * Blog   : http://www.liuling123.com
+- * Date   : 15/12/13
++ * Created by Administrator on 2016/9/1.
+  */
 public class NewsListFragment extends BaseLazyFragment implements NewsView,SwipeRefreshLayout.OnRefreshListener{
     private static final String TAG = "NewsListFragment";
 
