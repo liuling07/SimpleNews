@@ -81,4 +81,10 @@ public class NewsDetailActivity extends SwipeBackActivity implements NewsDetailV
     public void hideProgress() {
         mProgressBar.setVisibility(View.GONE);
     }
+
+    @Override
+    protected void onDestroy() {
+        mNewsDetailPresenter = null;
+        super.onDestroy();
+    }
 }
