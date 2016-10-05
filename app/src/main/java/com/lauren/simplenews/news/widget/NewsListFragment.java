@@ -115,6 +115,9 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
     private NewsAdapter.OnItemClickListener mOnItemClickListener = new NewsAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
+            if (mData.size() <= 0) {
+                return;
+            }
             NewsBean news = mAdapter.getItem(position);
             Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
             intent.putExtra("news", news);
