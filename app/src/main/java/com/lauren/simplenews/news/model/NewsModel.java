@@ -9,8 +9,8 @@ package com.lauren.simplenews.news.model;
  */
 public interface NewsModel {
 
-    void loadNews(String url, int type, NewsModelImpl.OnLoadNewsListListener listener);
+    void loadNews(String url, int type, OnLoadNewsListListener listener);
 
-    void loadNewsDetail(String docid, NewsModelImpl.OnLoadNewsDetailListener listener);
+    void loadNewsDetail(String docid, OnLoadNewsDetailListener listener);
 
 }
