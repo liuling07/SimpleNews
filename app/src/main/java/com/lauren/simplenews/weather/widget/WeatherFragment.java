@@ -135,4 +135,10 @@ public class WeatherFragment extends Fragment implements WeatherView {
     public void showErrorToast(String msg) {
         Snackbar.make(getActivity().findViewById(R.id.drawer_layout), msg, Snackbar.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onDestroy() {
+        mWeatherPresenter = null;
+        super.onDestroy();
+    }
 }

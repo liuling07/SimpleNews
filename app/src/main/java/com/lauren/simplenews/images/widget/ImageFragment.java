@@ -123,4 +123,10 @@ public class ImageFragment extends Fragment implements ImageView, SwipeRefreshLa
             Snackbar.make(view, getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    public void onDestroy() {
+        mImagePresenter = null;
+        super.onDestroy();
+    }
 }

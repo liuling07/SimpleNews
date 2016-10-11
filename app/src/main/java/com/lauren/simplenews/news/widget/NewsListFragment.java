@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,15 +26,15 @@ import com.lauren.simplenews.utils.LogUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Description : 新闻Fragment
- * Author : lauren
- * Email  : lauren.liuling@gmail.com
- * Blog   : http://www.liuling123.com
- * Date   : 15/12/13
- */
-public class NewsListFragment extends Fragment implements NewsView, SwipeRefreshLayout.OnRefreshListener {
-
+ /**
+- * Description : 新闻Fragment
+- * Author : lauren
+- * Email  : lauren.liuling@gmail.com
+- * Blog   : http://www.liuling123.com
+- * Date   : 15/12/13
++ * Created by Administrator on 2016/9/1.
+  */
+public class NewsListFragment extends BaseLazyFragment implements NewsView,SwipeRefreshLayout.OnRefreshListener{
     private static final String TAG = "NewsListFragment";
 
     private SwipeRefreshLayout mSwipeRefreshWidget;
@@ -48,24 +47,28 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
     private int mType = NewsFragment.NEWS_TYPE_TOP;
     private int pageIndex = 0;
 
-    public static NewsListFragment newInstance(int type) {
-        Bundle args = new Bundle();
-        NewsListFragment fragment = new NewsListFragment();
-        args.putInt("type", type);
-        fragment.setArguments(args);
-        return fragment;
-    }
+
+    //---------------------abstract method------------------------//
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initPrepare() {
         mNewsPresenter = new NewsPresenterImpl(this);
         mType = getArguments().getInt("type");
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected void onInvisible() {
+
+    }
+
+    @Override
+    protected void initData() {
+        onRefresh();
+//        mNewsPresenter.loadNews(mType, pageIndex + Urls.PAZE_SIZE);
+    }
+
+    @Override
+    protected View initView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_newslist, null);
 
         mSwipeRefreshWidget = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_widget);
@@ -85,9 +88,19 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
         mAdapter.setOnItemClickListener(mOnItemClickListener);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnScrollListener(mOnScrollListener);
-        onRefresh();
         return view;
     }
+
+
+    public static NewsListFragment newInstance(int type) {
+        Bundle args = new Bundle();
+        NewsListFragment fragment = new NewsListFragment();
+        args.putInt("type", type);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    //-----------------------------call back----------------------------------//
 
     private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
 
@@ -180,4 +193,9 @@ public class NewsListFragment extends Fragment implements NewsView, SwipeRefresh
         mNewsPresenter.loadNews(mType, pageIndex);
     }
 
+    @Override
+    public void onDestroy() {
+        mNewsPresenter = null;
+        super.onDestroy();
+    }
 }

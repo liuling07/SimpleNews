@@ -110,4 +110,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new AboutFragment()).commit();
         mToolbar.setTitle(R.string.navigation_about);
     }
+
+    @Override
+    protected void onDestroy() {
+        mMainPresenter = null;
+        super.onDestroy();
+    }
 }
