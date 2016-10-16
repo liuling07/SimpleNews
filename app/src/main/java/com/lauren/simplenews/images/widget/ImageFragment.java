@@ -56,7 +56,7 @@ public class ImageFragment extends Fragment implements ImageView, SwipeRefreshLa
                 R.color.accent);
         mSwipeRefreshWidget.setOnRefreshListener(this);
 
-        mRecyclerView = (RecyclerView)view.findViewById(R.id.recycle_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycle_view);
         mRecyclerView.setHasFixedSize(true);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -84,7 +84,7 @@ public class ImageFragment extends Fragment implements ImageView, SwipeRefreshLa
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
             if (newState == RecyclerView.SCROLL_STATE_IDLE
-                    && lastVisibleItem + 1 == mAdapter.getItemCount() ) {
+                    && lastVisibleItem + 1 == mAdapter.getItemCount()) {
                 //加载更多
                 Snackbar.make(getActivity().findViewById(R.id.drawer_layout), getString(R.string.image_hit), Snackbar.LENGTH_SHORT).show();
             }
@@ -93,7 +93,7 @@ public class ImageFragment extends Fragment implements ImageView, SwipeRefreshLa
 
     @Override
     public void onRefresh() {
-        if(mData != null) {
+        if (mData != null) {
             mData.clear();
         }
         mImagePresenter.loadImageList();
@@ -101,7 +101,7 @@ public class ImageFragment extends Fragment implements ImageView, SwipeRefreshLa
 
     @Override
     public void addImages(List<ImageBean> list) {
-        if(mData == null) {
+        if (mData == null) {
             mData = new ArrayList<ImageBean>();
         }
         mData.addAll(list);
@@ -126,7 +126,9 @@ public class ImageFragment extends Fragment implements ImageView, SwipeRefreshLa
 
     @Override
     public void onDestroy() {
-        mImagePresenter = null;
         super.onDestroy();
+        if (mImagePresenter != null)
+            ((ImagePresenterImpl) mImagePresenter).onDestroy();
+        mImagePresenter = null;
     }
 }

@@ -113,7 +113,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     protected void onDestroy() {
-        mMainPresenter = null;
         super.onDestroy();
+        if (mMainPresenter != null)
+            ((MainPresenterImpl) mMainPresenter).onDestroy();
+        mMainPresenter = null;
     }
+
 }

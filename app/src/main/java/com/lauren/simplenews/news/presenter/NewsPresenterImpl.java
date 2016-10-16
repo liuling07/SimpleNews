@@ -82,4 +82,9 @@ public class NewsPresenterImpl implements NewsPresenter, NewsModelImpl.OnLoadNew
         mNewsView.hideProgress();
         mNewsView.showLoadFailMsg();
     }
+
+    public void onDestroy(){
+        if(mNewsView != null)
+            mNewsView = null;
+    }
 }

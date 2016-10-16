@@ -35,7 +35,7 @@ public class NewsDetailPresenterImpl implements NewsDetailPresenter, NewsModelIm
 
     @Override
     public void onSuccess(NewsDetailBean newsDetailBean) {
-        if(newsDetailBean != null) {
+        if (newsDetailBean != null) {
             mNewsDetailView.showNewsDetialContent(newsDetailBean.getBody());
         }
         mNewsDetailView.hideProgress();
@@ -44,5 +44,10 @@ public class NewsDetailPresenterImpl implements NewsDetailPresenter, NewsModelIm
     @Override
     public void onFailure(String msg, Exception e) {
         mNewsDetailView.hideProgress();
+    }
+
+    public void onDestroy() {
+        if (mNewsDetailView != null)
+            mNewsDetailView = null;
     }
 }

@@ -2,6 +2,7 @@ package com.lauren.simplenews.main.presenter;
 
 import com.lauren.simplenews.main.view.MainView;
 import com.lauren.simplenews.R;
+
 /**
  * Description :
  * Author : lauren
@@ -36,5 +37,10 @@ public class MainPresenterImpl implements MainPresenter {
                 mMainView.switch2News();
                 break;
         }
+    }
+
+    public void onDestroy() {
+        if (mMainView != null)
+            mMainView = null;
     }
 }

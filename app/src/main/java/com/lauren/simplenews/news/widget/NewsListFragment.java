@@ -26,15 +26,15 @@ import com.lauren.simplenews.utils.LogUtils;
 import java.util.ArrayList;
 import java.util.List;
 
- /**
-- * Description : 新闻Fragment
-- * Author : lauren
-- * Email  : lauren.liuling@gmail.com
-- * Blog   : http://www.liuling123.com
-- * Date   : 15/12/13
-+ * Created by Administrator on 2016/9/1.
-  */
-public class NewsListFragment extends BaseLazyFragment implements NewsView,SwipeRefreshLayout.OnRefreshListener{
+/**
+ * - * Description : 新闻Fragment
+ * - * Author : lauren
+ * - * Email  : lauren.liuling@gmail.com
+ * - * Blog   : http://www.liuling123.com
+ * - * Date   : 15/12/13
+ * + * Created by Administrator on 2016/9/1.
+ */
+public class NewsListFragment extends BaseLazyFragment implements NewsView, SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = "NewsListFragment";
 
     private SwipeRefreshLayout mSwipeRefreshWidget;
@@ -77,7 +77,7 @@ public class NewsListFragment extends BaseLazyFragment implements NewsView,Swipe
                 R.color.accent);
         mSwipeRefreshWidget.setOnRefreshListener(this);
 
-        mRecyclerView = (RecyclerView)view.findViewById(R.id.recycle_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycle_view);
         mRecyclerView.setHasFixedSize(true);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -149,15 +149,15 @@ public class NewsListFragment extends BaseLazyFragment implements NewsView,Swipe
     @Override
     public void addNews(List<NewsBean> newsList) {
         mAdapter.isShowFooter(true);
-        if(mData == null) {
+        if (mData == null) {
             mData = new ArrayList<NewsBean>();
         }
         mData.addAll(newsList);
-        if(pageIndex == 0) {
+        if (pageIndex == 0) {
             mAdapter.setmDate(mData);
         } else {
             //如果没有更多数据了,则隐藏footer布局
-            if(newsList == null || newsList.size() == 0) {
+            if (newsList == null || newsList.size() == 0) {
                 mAdapter.isShowFooter(false);
             }
             mAdapter.notifyDataSetChanged();
@@ -173,7 +173,7 @@ public class NewsListFragment extends BaseLazyFragment implements NewsView,Swipe
 
     @Override
     public void showLoadFailMsg() {
-        if(pageIndex == 0) {
+        if (pageIndex == 0) {
             mAdapter.isShowFooter(false);
             mAdapter.notifyDataSetChanged();
         }
@@ -184,7 +184,7 @@ public class NewsListFragment extends BaseLazyFragment implements NewsView,Swipe
     @Override
     public void onRefresh() {
         pageIndex = 0;
-        if(mData != null) {
+        if (mData != null) {
             mData.clear();
         }
         mNewsPresenter.loadNews(mType, pageIndex);
@@ -192,7 +192,9 @@ public class NewsListFragment extends BaseLazyFragment implements NewsView,Swipe
 
     @Override
     public void onDestroy() {
-        mNewsPresenter = null;
         super.onDestroy();
+        if (mNewsPresenter != null)
+            ((NewsPresenterImpl) mNewsPresenter).onDestroy();
+        mNewsPresenter = null;
     }
 }

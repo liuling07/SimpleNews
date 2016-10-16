@@ -41,4 +41,9 @@ public class ImagePresenterImpl implements ImagePresenter, ImageModelImpl.OnLoad
         mImageView.hideProgress();
         mImageView.showLoadFailMsg();
     }
+
+    public void onDestroy() {
+        if (mImageView != null)
+            mImageView = null;
+    }
 }

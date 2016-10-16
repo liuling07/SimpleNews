@@ -84,7 +84,9 @@ public class NewsDetailActivity extends SwipeBackActivity implements NewsDetailV
 
     @Override
     protected void onDestroy() {
-        mNewsDetailPresenter = null;
         super.onDestroy();
+        if(mNewsDetailPresenter != null)
+            ((NewsDetailPresenterImpl)mNewsDetailPresenter).onDestroy();
+        mNewsDetailPresenter = null;
     }
 }
