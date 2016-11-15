@@ -1,5 +1,7 @@
 # SimpleNews
-基于Material Design和MVP的新闻客户端
+基于Material Design和MVP的新闻客户端，fork了之后我干了啥？
+* 修改部分MVP逻辑，完善可能造成内存泄露的代码。
+* 增添一个懒加载，让ViewPager+FragmentPagerAdapter的结合更加优雅。
 
 # Screenshot
 ###### 新闻列表
