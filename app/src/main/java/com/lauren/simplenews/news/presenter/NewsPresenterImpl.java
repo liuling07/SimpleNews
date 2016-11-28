@@ -4,6 +4,7 @@ import com.lauren.simplenews.beans.NewsBean;
 import com.lauren.simplenews.commons.Urls;
 import com.lauren.simplenews.news.model.NewsModel;
 import com.lauren.simplenews.news.model.NewsModelImpl;
+import com.lauren.simplenews.news.model.OnLoadNewsListListener;
 import com.lauren.simplenews.news.view.NewsView;
 import com.lauren.simplenews.news.widget.NewsFragment;
 import com.lauren.simplenews.utils.LogUtils;
@@ -17,7 +18,7 @@ import java.util.List;
  * Blog   : http://www.liuling123.com
  * Date   : 15/12/18
  */
-public class NewsPresenterImpl implements NewsPresenter, NewsModelImpl.OnLoadNewsListListener {
+public class NewsPresenterImpl implements NewsPresenter, OnLoadNewsListListener {
 
     private static final String TAG = "NewsPresenterImpl";
 

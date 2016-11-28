@@ -93,17 +93,15 @@ public class ImageFragment extends Fragment implements ImageView, SwipeRefreshLa
 
     @Override
     public void onRefresh() {
-        if(mData != null) {
-            mData.clear();
-        }
         mImagePresenter.loadImageList();
     }
 
     @Override
     public void addImages(List<ImageBean> list) {
         if(mData == null) {
-            mData = new ArrayList<ImageBean>();
+            mData = new ArrayList<>();
         }
+        mData.clear();
         mData.addAll(list);
         mAdapter.setmDate(mData);
     }
@@ -120,7 +118,9 @@ public class ImageFragment extends Fragment implements ImageView, SwipeRefreshLa
 
     @Override
     public void showLoadFailMsg() {
-        View view = getActivity() == null ? mRecyclerView.getRootView() : getActivity().findViewById(R.id.drawer_layout);
-        Snackbar.make(view, getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
+        if (isAdded()) {
+            View view = getActivity() == null ? mRecyclerView.getRootView() : getActivity().findViewById(R.id.drawer_layout);
+            Snackbar.make(view, getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
+        }
     }
 }
